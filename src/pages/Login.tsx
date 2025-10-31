@@ -26,7 +26,7 @@ export function Login() {
     <div>
       <div className="h-screen flex flex-col justify-center items-center text-white p-4">
         <h1 className="text-3xl font-bold mb-6">Login</h1>
-        <form onSubmit={handleLogin} className="bg-[#1E1E1E] flex flex-col items-center w-full max-w-xl p-10 gap-3 rounded-[8px]">
+        <form onSubmit={handleLogin} className="bg-[#1E1E1E] flex flex-col items-center w-full max-w-xl p-10 gap-3 rounded-lg">
           <input
             type="text"
             placeholder="Usuário"
