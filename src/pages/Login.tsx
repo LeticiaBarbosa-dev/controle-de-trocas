@@ -32,14 +32,14 @@ export function Login() {
             placeholder="Usuário"
             value={usuario}
             onChange={(e) => setUsuario(e.target.value)}
-            className="mb-3 p-3 rounded w-full border-[0.5px] border-gray-600 placeholder:text-gray-400 placeholder:text-xs"
+            className="mb-3 p-3 rounded w-full border-[0.5px] border-gray-600 placeholder:text-gray-400 placeholder:text-xs focus:outline-none"
           />
           <input
             type="password"
             placeholder="Senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            className="mb-3 p-3 rounded w-full border-[0.5px] border-gray-600 placeholder:text-gray-400 placeholder:text-xs"
+            className="mb-3 p-3 rounded w-full border-[0.5px] border-gray-600 placeholder:text-gray-400 placeholder:text-xs focus:outline-none"
           />
           {erro && <p className="text-red-400 mb-2">{erro}</p>}
           <button
