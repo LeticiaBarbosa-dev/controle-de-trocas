@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
 
 export function Login() {
   const navigate = useNavigate();
@@ -7,49 +8,58 @@ export function Login() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-  function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
-    // login padrão
-    const usuarioPadrao = "admin";
-    const senhaPadrao = "1234";
+    setErro("");
 
-    if (usuario === usuarioPadrao && senha === senhaPadrao) {
-      localStorage.setItem("logado", "true");
-      navigate("/trocas");
-    } else {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: usuario,
+      password: senha,
+    });
+
+    if (error) {
       setErro("Usuário ou senha incorretos.");
+      return;
     }
+
+    // login bem sucedido
+    navigate("/trocas");
   }
 
   return (
-    <div>
-      <div className="h-screen flex flex-col justify-center items-center text-white p-4">
-        <h1 className="text-3xl font-bold mb-6">Login</h1>
-        <form onSubmit={handleLogin} className="bg-[#1E1E1E] flex flex-col items-center w-full max-w-xl p-10 gap-3 rounded-lg">
-          <input
-            type="text"
-            placeholder="Usuário"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-            className="mb-3 p-3 rounded w-full border-[0.5px] border-gray-600 placeholder:text-gray-400 placeholder:text-xs focus:outline-none"
-          />
-          <input
-            type="password"
-            placeholder="Senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            className="mb-3 p-3 rounded w-full border-[0.5px] border-gray-600 placeholder:text-gray-400 placeholder:text-xs focus:outline-none"
-          />
-          {erro && <p className="text-red-400 mb-2">{erro}</p>}
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg transition-all w-full cursor-pointer"
-          >
-            Entrar
-          </button>
-        </form>
-      </div>
+    <div className="h-screen flex flex-col justify-center items-center text-white p-4">
+      <h1 className="text-3xl font-bold mb-6">Login</h1>
+
+      <form
+        onSubmit={handleLogin}
+        className="bg-[#1E1E1E] flex flex-col items-center w-full max-w-xl p-10 gap-3 rounded-lg"
+      >
+        <input
+          type="email"
+          placeholder="Email"
+          value={usuario}
+          onChange={(e) => setUsuario(e.target.value)}
+          className="mb-3 p-3 rounded w-full border-[0.5px] border-gray-600 placeholder:text-gray-400 placeholder:text-xs focus:outline-none"
+        />
+
+        <input
+          type="password"
+          placeholder="Senha"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          className="mb-3 p-3 rounded w-full border-[0.5px] border-gray-600 placeholder:text-gray-400 placeholder:text-xs focus:outline-none"
+        />
+
+        {erro && <p className="text-red-400 mb-2">{erro}</p>}
+
+        <button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg transition-all w-full cursor-pointer"
+        >
+          Entrar
+        </button>
+      </form>
     </div>
   );
 }

@@ -1,13 +1,44 @@
 import { TrashIcon } from "@phosphor-icons/react";
 
-export function CardTroca() {
+interface CardTrocaProps {
+  id: string;
+  nome: string;
+  totalProdutos: number;
+  dataCriacao: string;
+  onClick: () => void;
+  onDelete: () => void;
+}
+
+export function CardTroca({
+  nome,
+  totalProdutos,
+  dataCriacao,
+  onClick,
+  onDelete,
+}: CardTrocaProps) {
   return (
-    <div className="bg-[#1E1E1E] w-full p-3 rounded-lg flex flex-col gap-4">
+    <div
+      className="bg-[#1E1E1E] w-full p-3 rounded-lg flex flex-col gap-4 cursor-pointer text-white"
+      onClick={onClick}
+    >
       <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-xl">Lacre verde - 0652965</h3>
-        <TrashIcon className="cursor-pointer" size={20} />
+        <h3 className="font-semibold text-xl">{nome}</h3>
+
+        <TrashIcon
+          onClick={(e) => {
+            e.stopPropagation(); // evita que clique no delete entre na troca
+            onDelete();
+          }}
+          className="cursor-pointer hover:opacity-70"
+          size={20}
+        />
       </div>
-      <span className="font-light text-lg">3 produtos - Criado em 17/10/2025</span>
+
+      <span className="font-light text-base">
+        {`${totalProdutos} produtos • Criado em ${new Date(
+          dataCriacao
+        ).toLocaleDateString("pt-BR")}`}
+      </span>
     </div>
   );
 }
