@@ -4,7 +4,7 @@ import { supabase } from "../supabaseClient";
 export async function uploadImagem(file: File) {
   const fileName = `${Date.now()}-${file.name}`;
 
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from("produtos") // nome do bucket
     .upload(fileName, file);
 
